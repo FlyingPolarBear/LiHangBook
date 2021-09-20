@@ -7,8 +7,20 @@ LastEditTime: 2021-07-31 00:14:05
 Description: None
 '''
 import numpy as np
+import time
 
 
+def timmer(fun):
+    def deco(*args, **kwargs):
+        start = time.time()
+        res = fun(*args, **kwargs)
+        end = time.time()
+        print('{} executed in {}s'.format(fun.__name__, end - start))
+        return res
+    return deco
+
+
+@timmer
 def Iteration(M, d=0.85, times=20):  # 迭代算法
     n = M.shape[0]
     R = 1/n * np.ones((n))  # PR向量
@@ -20,6 +32,7 @@ def Iteration(M, d=0.85, times=20):  # 迭代算法
     return R
 
 
+@timmer
 def Power(M, d=0.85, times=20):  # 幂法
     n = M.shape[0]
     R = 1/n * np.ones((n))
@@ -32,6 +45,7 @@ def Power(M, d=0.85, times=20):  # 幂法
     return R / np.sum(R)
 
 
+@timmer
 def Algebra(M, d=0.85):  # 代数算法
     n = M.shape[0]
     E = np.ones((n, n))
